@@ -59,6 +59,16 @@ dependencies {
     def swipeToRefreshVersion = "1.1.0"
     def convert_scalars = "2.0.1"
     def glideVersion = "4.16.0"
+    def junitVersion = "4.13.2"
+    def mockitoKotlinVersion = "2.1.0"
+    def mockitoVersion = "5.2.0"
+    def coreTestingVersion = "2.2.0"
+    def coroutineTestVersion = "1.3.8"
+    def idlingVersion = "1.0.0"
+    def testJunitVersion = "1.1.5"
+    def espressoVersion = "3.5.1"
+    def testRunnerVersion = "1.5.2"
+    def baristaVersion = "4.2.0"
 
 
     implementation "androidx.core:core-ktx:$kotlinVersion"
@@ -88,4 +98,19 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
+    testImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineTestVersion"
+
+    androidTestImplementation "com.jakewharton.espresso:okhttp3-idling-resource:$idlingVersion"
+    androidTestImplementation "androidx.test.ext:junit:$testJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    androidTestImplementation("com.adevinta.android:barista:$baristaVersion") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
 }
