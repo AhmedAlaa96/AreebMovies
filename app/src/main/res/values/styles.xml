@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="movieTitleStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movieReleaseDateStyle">
+        <item name="android:textColor">@color/paynesGrey</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="movieVoteStyle" parent="movieReleaseDateStyle">
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>
