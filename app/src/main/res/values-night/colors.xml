@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/black</color>
+    <color name="colorAccent">@color/white</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="whiteOpacity10">#1AFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="blackOpacity40">#66000000</color>
+    <color name="blackOpacity20">#33ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="dimGreyOpacity41">#69707070</color>
+    <color name="paynesGreyOpacity29">#4AE1E1E1</color>
+    <color name="paynesGrey">#FFE1E1E1</color>
+</resources>
