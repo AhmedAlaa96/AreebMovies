@@ -4,10 +4,15 @@ package com.ahmed.areebmovies.data.models.dto
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.ahmed.areebmovies.data.roommodels.GenresConverter
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Keep
+@Entity(tableName = "movies")
 data class Movie(
     @SerializedName("adult")
     val adult: Boolean? = null,
@@ -16,6 +21,7 @@ data class Movie(
     @SerializedName("genre_ids")
     val genreIds: ArrayList<Int>? = null,
     @SerializedName("id")
+    @PrimaryKey
     val id: Int? = null,
     @SerializedName("original_language")
     val originalLanguage: String? = null,

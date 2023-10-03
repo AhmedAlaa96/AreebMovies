@@ -7,10 +7,8 @@ import com.ahmed.areebmovies.data.models.StatusCode
 import com.ahmed.areebmovies.data.models.dto.MoviesListResponse
 import com.ahmed.areebmovies.data.remote.IRemoteDataSource
 import com.ahmed.areebmovies.data.remote.RemoteDataSource
-import com.ahmed.areebmovies.data.repositories.movieslist.GetMoviesListRepository
-import com.ahmed.areebmovies.data.repositories.movieslist.IGetMoviesListRepository
-import com.ahmed.areebmovies.data.shared_prefrences.IPreferencesDataSource
-import com.ahmed.areebmovies.data.shared_prefrences.PreferencesDataSource
+import com.ahmed.areebmovies.data.sharedprefrences.IPreferencesDataSource
+import com.ahmed.areebmovies.data.sharedprefrences.PreferencesDataSource
 import com.ahmed.areebmovies.utils.BaseUnitTest
 import com.ahmed.areebmovies.utils.connection_utils.ConnectionUtils
 import com.ahmed.areebmovies.utils.connection_utils.IConnectionUtils

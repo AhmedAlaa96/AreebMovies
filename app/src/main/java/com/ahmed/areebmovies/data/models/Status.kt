@@ -7,7 +7,6 @@ sealed class Status<T>(
 ) {
 
     class Success<T>(data: T?, error: String? = null) : Status<T>(StatusCode.SUCCESS, data, error)
-
     class Error<T>(data: T? = null, error: String?) : Status<T>(StatusCode.ERROR, data, error)
 
     class ServerError<T>(data: T? = null, error: String?) :
@@ -60,5 +59,10 @@ sealed class Status<T>(
     fun isIdle(): Boolean {
         return statusCode == StatusCode.IDLE
     }
+
+    override fun toString(): String {
+        return "Status(statusCode=$statusCode, data=$data, error=$error)"
+    }
+
 
 }

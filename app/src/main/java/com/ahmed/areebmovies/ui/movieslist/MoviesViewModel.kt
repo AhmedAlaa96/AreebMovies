@@ -43,10 +43,10 @@ class MoviesViewModel @Inject constructor(
         }
 
         viewModelScope.launch(mainDispatcher + handler) {
-            if (moviesResponseStatus != null && moviesResponseStatus?.isIdle() != true) {
+            if (moviesResponseStatus != null && moviesResponseStatus?.isIdle() != true && moviesResponseStatus?.isOfflineData() != true) {
                 setMoviesResponseStatus(moviesResponseStatus!!)
             } else {
-                callGetMoviesList(ProgressTypes.MAIN_PROGRESS, false)
+                getLocalMoviesList()
             }
         }
     }
@@ -114,6 +114,24 @@ class MoviesViewModel @Inject constructor(
             }
     }
 
+    private fun getLocalMoviesList() {
+        viewModelScope.launch {
+            mIMoviesListUseCase.getLocalMovies()
+                .collect { moviesResponseStatus ->
+                    if (moviesResponseStatus.isOfflineData() && !moviesResponseStatus.data?.movies.isNullOrEmpty()) {
+                        setMoviesResponseStatus(
+                            Status.OfflineData(
+                                moviesResponseStatus.data?.movies,
+                                error = null
+                            )
+                        )
+                    }
+                    callGetMoviesList(ProgressTypes.MAIN_PROGRESS, true)
+                }
+
+        }
+    }
+
     private suspend fun mapMovieListResponse(
         moviesResponse: Status<MoviesListResponse>,
         progressType: ProgressTypes,
@@ -128,7 +146,7 @@ class MoviesViewModel @Inject constructor(
 
                 val currentList = moviesResponseStatus?.data ?: ArrayList()
                 currentList.addAll(moviesList)
-
+                mIMoviesListUseCase.insertMoviesList(currentList).first()
                 mPageModel.incrementPageNumber()
 
                 if (totalCount != null && currentList.size >= totalCount)
@@ -164,7 +182,13 @@ class MoviesViewModel @Inject constructor(
     }
 
     private suspend fun setMoviesResponseStatus(moviesResponseStatus: Status<ArrayList<Movie>>) {
-        this.moviesResponseStatus = moviesResponseStatus
+        if (!moviesResponseStatus.isSuccess() && this.moviesResponseStatus?.isOfflineData() == true) {
+            val movies = this.moviesResponseStatus?.data
+            this.moviesResponseStatus = Status.Success(movies)
+        } else {
+            this.moviesResponseStatus = moviesResponseStatus
+        }
+
         _moviesResponseMutableSharedFlow.emit(moviesResponseStatus)
     }
 

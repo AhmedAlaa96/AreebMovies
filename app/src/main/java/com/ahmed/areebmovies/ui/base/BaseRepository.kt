@@ -1,9 +1,8 @@
 package com.ahmed.areebmovies.ui.base
 
-import android.util.Log
 import com.ahmed.areebmovies.data.models.Status
 import com.ahmed.areebmovies.data.remote.IRemoteDataSource
-import com.ahmed.areebmovies.data.shared_prefrences.IPreferencesDataSource
+import com.ahmed.areebmovies.data.sharedprefrences.IPreferencesDataSource
 import com.ahmed.areebmovies.utils.Utils
 import com.ahmed.areebmovies.utils.connection_utils.IConnectionUtils
 import kotlinx.coroutines.CoroutineDispatcher
