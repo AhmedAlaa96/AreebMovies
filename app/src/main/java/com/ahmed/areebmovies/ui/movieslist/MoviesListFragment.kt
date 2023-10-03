@@ -83,7 +83,6 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(),
         bindToastMessageObserver()
         bindGetMoviesObserver()
         viewModel.getMoviesListResponse()
-
     }
 
     private fun initViewStateLifecycle() {
@@ -106,7 +105,7 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(),
     private fun bindGetMoviesObserver() {
         observe(viewModel.moviesResponseSharedFlow) {
             when (it.statusCode) {
-                StatusCode.SUCCESS -> {
+                StatusCode.SUCCESS, StatusCode.OFFLINE_DATA -> {
                     onMoviesListSuccess(it.data)
                 }
                 else -> {
@@ -128,10 +127,10 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(),
     private fun onMoviesListSuccess(data: ArrayList<Movie>?) {
         binding.swipeRefreshMovies.isVisible = true
         binding.errorLayout.root.isVisible = false
-        if(!data.isNullOrEmpty()){
-            viewModel.restoreViewState(this,binding.rvMoviesList)
+        if (!data.isNullOrEmpty()) {
+            viewModel.restoreViewState(this, binding.rvMoviesList)
             moviesAdapter.replaceItems(data)
-        }else{
+        } else {
             binding.emptyLayout.root.isVisible = true
         }
     }

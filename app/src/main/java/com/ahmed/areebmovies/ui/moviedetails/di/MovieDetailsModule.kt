@@ -4,7 +4,7 @@ import com.ahmed.areebmovies.data.local.ILocalDataSource
 import com.ahmed.areebmovies.data.remote.IRemoteDataSource
 import com.ahmed.areebmovies.data.repositories.moviedetails.GetMovieDetailsRepository
 import com.ahmed.areebmovies.data.repositories.moviedetails.IGetMovieDetailsRepository
-import com.ahmed.areebmovies.data.shared_prefrences.IPreferencesDataSource
+import com.ahmed.areebmovies.data.sharedprefrences.IPreferencesDataSource
 import com.ahmed.areebmovies.domain.usecases.moviedetails.IMovieDetailsUseCase
 import com.ahmed.areebmovies.domain.usecases.moviedetails.MovieDetailsUseCase
 import com.ahmed.areebmovies.retrofit.RetrofitModule

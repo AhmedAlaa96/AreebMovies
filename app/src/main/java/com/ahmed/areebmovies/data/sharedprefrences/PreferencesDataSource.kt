@@ -1,4 +1,4 @@
-package com.ahmed.areebmovies.data.shared_prefrences
+package com.ahmed.areebmovies.data.sharedprefrences
 
 import android.content.Context
 import android.content.SharedPreferences
