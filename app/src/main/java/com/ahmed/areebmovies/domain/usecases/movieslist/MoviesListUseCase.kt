@@ -22,7 +22,7 @@ class MoviesListUseCase @Inject constructor(private val mMoviesListRepository: I
     private fun mapMoviesListStatus(moviesListResponse: Status<MoviesListResponse>): Status<MoviesListResponse> {
         return when (validateResponse(moviesListResponse)) {
             StatusCode.SUCCESS -> {
-                if (moviesListResponse.data?.results.isNullOrEmpty())
+                if (moviesListResponse.data?.movies.isNullOrEmpty())
                     Status.NoData(error = "No Data")
                 else {
                     moviesListResponse

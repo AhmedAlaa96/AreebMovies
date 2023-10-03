@@ -19,13 +19,15 @@ import com.ahmed.areebmovies.ui.movieslist.adapter.MoviesAdapter
 import com.ahmed.areebmovies.utils.Constants
 import com.ahmed.areebmovies.utils.alternate
 import com.ahmed.areebmovies.utils.observe
-import com.ahmed.areebmovies.utils.utilities.RecyclerViewItemDecoration
+import com.ahmed.areebmovies.utils.utilities.PagingScrollListener
 import com.ahmed.areebmovies.utils.view_state.SaveStateLifecycleObserver
 import com.ahmed.areebmovies.utils.view_state.ViewStateHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemClickListener<Movie> {
+class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(),
+    ListItemClickListener<Movie>,
+    PagingScrollListener.PagingScrollListenerInteractions {
 
     companion object {
         fun newInstance() = MoviesListFragment()
@@ -36,6 +38,7 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
 
     private val viewModel: MoviesViewModel by viewModels()
 
+    private lateinit var mMoviesLayoutManager: LinearLayoutManager
     private lateinit var moviesAdapter: MoviesAdapter
 
     override fun onActivityReady(savedInstanceState: Bundle?) {
@@ -48,18 +51,22 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
 
     private fun initAdapter() {
         moviesAdapter = MoviesAdapter(mContext, this)
-        val mMoviesLayoutManager = LinearLayoutManager(mContext)
+        mMoviesLayoutManager = LinearLayoutManager(mContext)
         binding.rvMoviesList.layoutManager = mMoviesLayoutManager
         binding.rvMoviesList.adapter = moviesAdapter
-        binding.rvMoviesList.addItemDecoration(
-            RecyclerViewItemDecoration(
-                mContext,
-                R.drawable.devider_movie_item
-            )
-        )
     }
 
     override fun setListeners() {
+        binding.rvMoviesList.addOnScrollListener(
+            PagingScrollListener(mMoviesLayoutManager, this)
+        )
+        binding.swipeRefreshMovies.setOnRefreshListener {
+            onRefresh()
+        }
+    }
+
+    private fun onRefresh() {
+        viewModel.onRefresh()
     }
 
     override fun bindViewModels() {
@@ -94,8 +101,8 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
                 StatusCode.SUCCESS -> {
                     binding.swipeRefreshMovies.isVisible = true
                     binding.errorLayout.root.isVisible = false
-                    it.data?.results?.let { movies ->
-                        moviesAdapter.addItems(movies)
+                    it.data?.let { movies ->
+                        moviesAdapter.replaceItems(movies)
                     }
                 }
                 else -> {
@@ -111,7 +118,6 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
     }
 
 
-
     private fun bindLoadingObserver() {
         observe(viewModel.loadingObservable) {
             onLoadingObserverRetrieved(it)
@@ -123,11 +129,14 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
         loadingModel.loadingProgressView = binding.viewProgress.loadingIndicator
         loadingModel.pullToRefreshProgressView = binding.swipeRefreshMovies
         loadingModel.loadingFullProgressView = binding.viewFullProgress.root
+        loadingModel.pagingProgressView = binding.progressViewPaging.root
         binding.viewProgress.root.isVisible =
             (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.MAIN_PROGRESS)
 
         binding.viewFullProgress.root.isVisible =
             (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.FULL_PROGRESS)
+        binding.progressViewPaging.root.isVisible =
+            (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.PAGING_PROGRESS)
         binding.swipeRefreshMovies.isRefreshing =
             (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.PULL_TO_REFRESH_PROGRESS)
     }
@@ -152,5 +161,9 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
 
     override fun onItemClick(item: Movie, position: Int) {
         navigateTo(MoviesListFragmentDirections.actionToMovieDetailsFragment(item.id ?: -1))
+    }
+
+    override fun onScroll() {
+        viewModel.onScroll()
     }
 }
