@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Movies App</string>
-    <string name="all">All</string>
     <string name="some_thing_went_wrong">Something went wrong. Please try again.</string>
     <string name="retry">Retry</string>
     <string name="no_data">No Movies found</string>
+    <string name="release">Release date: %1s</string>
     <string name="rate">Rate: %1s / 10</string>
     <string name="duration">Duration: %1s Hour(s) and %2s Minute(s)</string>
-    <string name="genres">Genres\n</string>
+    <string name="genres">Genres\n\n</string>
 </resources>

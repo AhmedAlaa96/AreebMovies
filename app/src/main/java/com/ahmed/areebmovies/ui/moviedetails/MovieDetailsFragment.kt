@@ -89,7 +89,7 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
                 separator = "\n",
                 prefix = getString(R.string.genres)
             ) { genre ->
-                "• ${genre.name}"
+                "\t• ${genre.name}"
             }
             txtSummary.text = data.overview.alternate()
         }

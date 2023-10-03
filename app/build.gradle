@@ -36,6 +36,11 @@ android {
         jvmTarget = '1.8'
     }
 
+    externalNativeBuild {
+        cmake {
+            path "src/jni/CMakeLists.txt"
+        }
+    }
 
     buildFeatures {
         viewBinding true

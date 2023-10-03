@@ -2,20 +2,21 @@ package com.ahmed.areebmovies.ui.movieslist
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.ahmed.areebmovies.data.models.PageModel
 import com.ahmed.areebmovies.data.models.ProgressTypes
 import com.ahmed.areebmovies.data.models.Status
-import com.ahmed.areebmovies.data.models.dto.MoviesListResponse
-import com.ahmed.areebmovies.data.models.PageModel
 import com.ahmed.areebmovies.data.models.StatusCode
 import com.ahmed.areebmovies.data.models.dto.Movie
+import com.ahmed.areebmovies.data.models.dto.MoviesListResponse
 import com.ahmed.areebmovies.domain.usecases.movieslist.IMoviesListUseCase
 import com.ahmed.areebmovies.ui.base.BasePagingViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 
 @HiltViewModel
@@ -24,6 +25,9 @@ class MoviesViewModel @Inject constructor(
     handle: SavedStateHandle
 ) : BasePagingViewModel(handle, mIMoviesListUseCase) {
 
+    @Inject
+    @Named("ViewModel")
+    lateinit var mainDispatcher: CoroutineDispatcher
 
     private var moviesResponseStatus: Status<ArrayList<Movie>>? = null
     private var moviesList: ArrayList<Movie>? = null
@@ -41,7 +45,7 @@ class MoviesViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch(Dispatchers.Main + handler) {
+        viewModelScope.launch(mainDispatcher + handler) {
             if (moviesResponseStatus != null && moviesResponseStatus?.isIdle() != true) {
                 setMoviesResponseStatus(moviesResponseStatus!!)
             } else {
@@ -57,7 +61,7 @@ class MoviesViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch(Dispatchers.Main + handler) {
+        viewModelScope.launch(mainDispatcher + handler) {
             callGetMoviesList(ProgressTypes.PAGING_PROGRESS, false)
         }
 
@@ -71,7 +75,7 @@ class MoviesViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch(Dispatchers.Main + handler) {
+        viewModelScope.launch(mainDispatcher + handler) {
             callGetMoviesList(ProgressTypes.PULL_TO_REFRESH_PROGRESS, true)
         }
 
@@ -85,7 +89,7 @@ class MoviesViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch(Dispatchers.Main + handler) {
+        viewModelScope.launch(mainDispatcher + handler) {
             callGetMoviesList(ProgressTypes.MAIN_PROGRESS, true)
         }
 
