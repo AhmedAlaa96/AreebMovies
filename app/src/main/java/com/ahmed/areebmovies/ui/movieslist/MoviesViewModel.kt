@@ -77,14 +77,32 @@ class MoviesViewModel @Inject constructor(
 
     }
 
+    internal fun onRetryClicked() {
+        mPageModel.reset()
+        val handler = CoroutineExceptionHandler { _, exception ->
+            viewModelScope.launch {
+                setMoviesResponseStatus(Status.Error(error = exception.message))
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.Main + handler) {
+            callGetMoviesList(ProgressTypes.MAIN_PROGRESS, true)
+        }
+
+    }
+
     private suspend fun callGetMoviesList(progressType: ProgressTypes, shouldClear: Boolean) {
         onGetMoviesSubscribe(progressType)
         mIMoviesListUseCase.getMoviesList(pageModel = mPageModel)
             .onStart {
                 showProgress(true, progressType)
             }.onCompletion {
-                showProgress(false)
-            }.collect {
+                showProgress(false, progressType)
+            }.catch {
+                setMoviesResponseStatus(Status.Error(error = it.message))
+                showProgress(false, progressType)
+            }
+            .collect {
                 mapMovieListResponse(it, shouldClear)
             }
     }

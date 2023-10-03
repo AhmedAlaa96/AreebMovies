@@ -77,7 +77,10 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
             val durationPair = DateTimeHelper.getDurationPair(data.runtime)
             imgMovie.setNetworkImage(data.posterPath)
             txtTitle.text = data.title.alternate()
-            txtReleaseDate.text = DateTimeHelper.convertDateStringToAnotherFormat(data.releaseDate)
+            txtReleaseDate.text = getString(
+                R.string.release,
+                DateTimeHelper.convertDateStringToAnotherFormat(data.releaseDate)
+            )
             txtVote.text = getString(R.string.rate, roundTheNumber(data.voteAverage))
             txtDuration.text = getString(
                 R.string.duration, durationPair.first.toString(), durationPair.second.toString()
