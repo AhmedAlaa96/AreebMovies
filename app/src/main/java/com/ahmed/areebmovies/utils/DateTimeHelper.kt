@@ -9,7 +9,9 @@ object DateTimeHelper {
     private const val DATE_FORMAT_YYYY_MM_DD_T_ZEROS = "yyyy-MM-dd'T'00:00:00'Z'"
     private const val DATE_FORMAT_d_MMMM_YYYY = "d MMMM yyyy"
     const val DATE_FORMAT_E_d_MMM = "E d, MMM"
-    const val DATE_FORMAT_YYYY = "yyyy"
+    private const val DATE_FORMAT_YYYY = "yyyy"
+    const val DATE_FORMAT_mm = "mm"
+    const val DATE_FORMAT_HH_MM_WITH_TEXT = "HH hour(s) and mm minute(s)"
     private const val DATE_FORMAT_HH_MM = "HH:mm"
 
     fun convertDateStringToAnotherFormat(
@@ -32,9 +34,7 @@ object DateTimeHelper {
         return alternateValue
     }
 
-
-
-
-
+    fun getDurationPair(duration: Int?): Pair<Int, Int> =
+        Pair((duration ?: 0) / 60, (duration ?: 0) % 60)
 
 }

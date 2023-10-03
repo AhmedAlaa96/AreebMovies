@@ -4,6 +4,7 @@
     <color name="whiteOpacity10">#1AFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="blackOpacity40">#66000000</color>
+    <color name="blackOpacity20">#33000000</color>
     <color name="transparent">#00000000</color>
     <color name="dimGreyOpacity41">#69707070</color>
     <color name="paynesGreyOpacity29">#4A3C3C43</color>

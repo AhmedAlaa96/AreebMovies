@@ -34,7 +34,7 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMoviesListBinding
         get() = FragmentMoviesListBinding::inflate
 
-    private val mMoviesListViewModel: MoviesViewModel by viewModels()
+    private val viewModel: MoviesViewModel by viewModels()
 
     private lateinit var moviesAdapter: MoviesAdapter
 
@@ -67,12 +67,29 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
         bindErrorObserver()
         bindToastMessageObserver()
         bindGetMoviesObserver()
-        mMoviesListViewModel.getMatchesResponse()
+        viewModel.getMoviesListResponse()
 
     }
 
+    private fun initViewStateLifecycle() {
+        val viewStateLifecycleObserver =
+            SaveStateLifecycleObserver(this::saveState, this::setViewsTags)
+        viewLifecycleOwner.lifecycle.addObserver(viewStateLifecycleObserver)
+    }
+
+    private fun saveState() {
+        viewModel.saveStates(binding.rvMoviesList)
+    }
+
+    private fun setViewsTags() {
+        ViewStateHelper.setViewTag(
+            binding.rvMoviesList,
+            Constants.ViewsTags.RECYCLER_VIEW_MOVIES
+        )
+    }
+
     private fun bindGetMoviesObserver() {
-        observe(mMoviesListViewModel.moviesResponseSharedFlow) {
+        observe(viewModel.moviesResponseSharedFlow) {
             when (it.statusCode) {
                 StatusCode.SUCCESS -> {
                     binding.swipeRefreshMovies.isVisible = true
@@ -93,28 +110,14 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
 
     }
 
+
+
     private fun bindLoadingObserver() {
-        observe(mMoviesListViewModel.loadingObservable) {
+        observe(viewModel.loadingObservable) {
             onLoadingObserverRetrieved(it)
         }
     }
 
-    private fun initViewStateLifecycle() {
-        val viewStateLifecycleObserver =
-            SaveStateLifecycleObserver(this::saveState, this::setViewsTags)
-        viewLifecycleOwner.lifecycle.addObserver(viewStateLifecycleObserver)
-    }
-
-    private fun saveState() {
-        mMoviesListViewModel.saveStates(binding.rvMoviesList)
-    }
-
-    private fun setViewsTags() {
-        ViewStateHelper.setViewTag(
-            binding.rvMoviesList,
-            Constants.ViewsTags.RECYCLER_VIEW_MOVIES
-        )
-    }
 
     private fun onLoadingObserverRetrieved(loadingModel: LoadingModel) {
         loadingModel.loadingProgressView = binding.viewProgress.loadingIndicator
@@ -130,7 +133,7 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
     }
 
     private fun bindErrorObserver() {
-        observe(mMoviesListViewModel.errorViewObservable) {
+        observe(viewModel.errorViewObservable) {
             showError(it)
             binding.errorLayout.root.visibility = View.GONE
         }
@@ -138,7 +141,7 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
 
 
     private fun bindToastMessageObserver() {
-        observe(mMoviesListViewModel.showToastObservable) {
+        observe(viewModel.showToastObservable) {
             showMessage(it)
         }
     }
@@ -148,6 +151,6 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(), ListItemCl
     }
 
     override fun onItemClick(item: Movie, position: Int) {
-        // NAVIGATE TO MOVIES DETAILS
+        navigateTo(MoviesListFragmentDirections.actionToMovieDetailsFragment(item.id ?: -1))
     }
 }
