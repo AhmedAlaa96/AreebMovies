@@ -9,11 +9,13 @@ import com.ahmed.areebmovies.data.models.dto.MovieDetailsResponse
 import com.ahmed.areebmovies.domain.usecases.moviedetails.IMovieDetailsUseCase
 import com.ahmed.areebmovies.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 
 @HiltViewModel
@@ -22,6 +24,10 @@ class MovieDetailsViewModel @Inject constructor(
     handle: SavedStateHandle
 ) :
     BaseViewModel(handle, mIMovieDetailsUseCase) {
+
+    @Inject
+    @Named("ViewModel")
+    lateinit var mainDispatcher: CoroutineDispatcher
 
 
     private var moviesResponseStatus: Status<MovieDetailsResponse>? = null
@@ -37,7 +43,7 @@ class MovieDetailsViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch(Dispatchers.Main + handler) {
+        viewModelScope.launch(mainDispatcher + handler) {
             if (moviesResponseStatus != null && moviesResponseStatus?.isIdle() != true) {
                 setMoviesResponseStatus(moviesResponseStatus!!)
             } else {

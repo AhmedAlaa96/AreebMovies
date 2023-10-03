@@ -17,6 +17,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -54,5 +57,20 @@ internal class AppModule {
         gson: Gson
     ): IPreferencesDataSource {
         return PreferencesDataSource(context, gson)
+    }
+
+    @Provides
+    @Singleton
+    @Named("Repository")
+    fun provideDispatcher(
+    ): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
+    @Provides
+    @Singleton
+    @Named("ViewModel")
+    fun provideMainDispatcher(
+    ): CoroutineDispatcher {
+        return Dispatchers.Main
     }
 }
