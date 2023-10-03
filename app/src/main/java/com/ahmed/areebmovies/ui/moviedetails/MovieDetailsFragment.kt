@@ -38,6 +38,9 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
     }
 
     override fun setListeners() {
+        binding.btnBack.setOnClickListener {
+            navigateUp()
+        }
     }
 
     override fun bindViewModels() {

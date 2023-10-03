@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Areeb Movies</string>
+    <string name="app_name">Movies App</string>
     <string name="all">All</string>
     <string name="some_thing_went_wrong">Something went wrong. Please try again.</string>
     <string name="retry">Retry</string>
