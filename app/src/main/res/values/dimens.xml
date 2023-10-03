@@ -13,6 +13,7 @@
     <dimen name="size_100">100dp</dimen>
     <dimen name="size_125">125dp</dimen>
     <dimen name="size_150">150dp</dimen>
+    <dimen name="size_200">200dp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="corner_radius_5">5dp</dimen>

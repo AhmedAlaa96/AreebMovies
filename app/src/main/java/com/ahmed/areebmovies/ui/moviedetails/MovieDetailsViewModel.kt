@@ -1,12 +1,12 @@
-package com.ahmed.areebmovies.ui.movieslist
+package com.ahmed.areebmovies.ui.moviedetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.ahmed.areebmovies.data.models.ProgressTypes
 import com.ahmed.areebmovies.data.models.Status
-import com.ahmed.areebmovies.data.models.dto.MoviesListResponse
 import com.ahmed.areebmovies.data.models.PageModel
-import com.ahmed.areebmovies.domain.usecases.movieslist.IMoviesListUseCase
+import com.ahmed.areebmovies.data.models.dto.MovieDetailsResponse
+import com.ahmed.areebmovies.domain.usecases.moviedetails.IMovieDetailsUseCase
 import com.ahmed.areebmovies.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,22 +17,20 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor(
-    private val mIMoviesListUseCase: IMoviesListUseCase,
+class MovieDetailsViewModel @Inject constructor(
+    private val mIMovieDetailsUseCase: IMovieDetailsUseCase,
     handle: SavedStateHandle
 ) :
-    BaseViewModel(handle, mIMoviesListUseCase) {
+    BaseViewModel(handle, mIMovieDetailsUseCase) {
 
 
-    private var moviesResponseStatus: Status<MoviesListResponse>? = null
+    private var moviesResponseStatus: Status<MovieDetailsResponse>? = null
 
 
-    private val mPageModel = PageModel()
-
-    private val _moviesResponseMutableSharedFlow = MutableSharedFlow<Status<MoviesListResponse>>()
+    private val _moviesResponseMutableSharedFlow = MutableSharedFlow<Status<MovieDetailsResponse>>()
     val moviesResponseSharedFlow = _moviesResponseMutableSharedFlow.asSharedFlow()
 
-    internal fun getMoviesListResponse() {
+    internal fun getMovieDetails(movieId: Int?) {
         val handler = CoroutineExceptionHandler { _, exception ->
             viewModelScope.launch {
                 setMoviesResponseStatus(Status.Error(error = exception.message))
@@ -43,14 +41,14 @@ class MoviesViewModel @Inject constructor(
             if (moviesResponseStatus != null && moviesResponseStatus?.isIdle() != true) {
                 setMoviesResponseStatus(moviesResponseStatus!!)
             } else {
-                callGetMoviesList(ProgressTypes.MAIN_PROGRESS)
+                callGetMovieDetails(ProgressTypes.MAIN_PROGRESS, movieId)
             }
         }
     }
 
-    private suspend fun callGetMoviesList(progressType: ProgressTypes) {
+    private suspend fun callGetMovieDetails(progressType: ProgressTypes, movieId: Int?) {
         onGetMoviesSubscribe(progressType)
-        mIMoviesListUseCase.getMoviesList(pageModel = mPageModel)
+        mIMovieDetailsUseCase.getMovieDetails(movieId = movieId)
             .onStart {
                 showProgress(true, progressType)
             }.onCompletion {
@@ -65,7 +63,7 @@ class MoviesViewModel @Inject constructor(
         shouldShowError(false)
     }
 
-    private suspend fun setMoviesResponseStatus(moviesResponseStatus: Status<MoviesListResponse>) {
+    private suspend fun setMoviesResponseStatus(moviesResponseStatus: Status<MovieDetailsResponse>) {
         this.moviesResponseStatus = moviesResponseStatus
         _moviesResponseMutableSharedFlow.emit(moviesResponseStatus)
     }

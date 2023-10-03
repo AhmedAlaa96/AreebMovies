@@ -18,9 +18,9 @@ object Constants {
     }
 
     object URL {
-        const val BASE_URL = "https://api.themoviedb.org/3/discover/"
-        const val GET_MOVIES = "movie"
-        const val GET_MOVIE_DETAILS = "movie/{movieId}"
+        const val BASE_URL = "https://api.themoviedb.org/3/"
+        const val GET_MOVIES = "discover/movie"
+        const val GET_MOVIE_DETAILS = "movie/{movieId}?language=en-US"
         private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
         fun getImageUrl(posterPath: String?): String?{
             return if(posterPath.isNullOrEmpty()) null

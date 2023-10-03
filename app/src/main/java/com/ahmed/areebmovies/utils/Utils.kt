@@ -36,4 +36,9 @@ object Utils {
             throwable.printStackTrace()
         }
     }
+
+    fun roundTheNumber(numInDouble: Double?): String {
+        return if(numInDouble == null) Constants.General.DASH_TEXT
+        else "%.1f".format((numInDouble))
+    }
 }
