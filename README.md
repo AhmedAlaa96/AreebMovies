@@ -62,19 +62,13 @@ The project includes unit tests to ensure the correctness of the implemented fea
 
 3. Right-click on the test class and select "Run <TestClass>" to execute the tests.
 
-[//]: # (## Release History)
+## Release History
 
-[//]: # (- v1.0.0 &#40;2023-08-24&#41;: Initial release)
+- v1.0.0 (2023-10-04): Initial release
 
-[//]: # (    - Implemented the main functionality of displaying the list of trending movies and showing movie details.)
+    - Implemented the main functionality of displaying the list of trending movies and showing movie details.
 
-[//]: # (- v1.0.1 &#40;2023-08-25&#41;: NDK Security & Fixing bugs)
-
-[//]: # (    - Add NDK Security for the authorization token.)
-
-[//]: # (    - Fixed minor bugs and improved overall stability.)
-
-[//]: # (### You can find the latest build [here ↗]&#40;https://install.appcenter.ms/users/ahmedalaa/apps/movies/distribution_groups/public&#41;)
+### You can find the latest build [here ↗](https://install.appcenter.ms/users/ahmedalaa/apps/areeb-movies/distribution_groups/public)
 
 ## Contributing
 
