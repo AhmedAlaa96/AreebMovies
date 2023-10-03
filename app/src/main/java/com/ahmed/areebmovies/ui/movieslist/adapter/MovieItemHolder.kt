@@ -31,7 +31,7 @@ class MovieItemHolder(
     }
 
     private fun bindMovieDate(releaseDate: String?) {
-        binding.txtDate.text = DateTimeHelper.convertDateStringToAnotherFormat(releaseDate)
+        binding.txtDate.text = binding.txtDate.context.getString(R.string.release, DateTimeHelper.convertDateStringToAnotherFormat(releaseDate))
     }
 
     private fun bindVoteText(voteAverage: Double?) {

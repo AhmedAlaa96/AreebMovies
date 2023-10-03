@@ -6,6 +6,7 @@ import com.ahmed.areebmovies.data.models.dto.MoviesListResponse
 import com.ahmed.areebmovies.data.models.PageModel
 import com.ahmed.areebmovies.data.repositories.movieslist.IGetMoviesListRepository
 import com.ahmed.areebmovies.ui.base.BaseUseCase
+import com.ahmed.areebmovies.utils.DateTimeHelper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
@@ -25,7 +26,7 @@ class MoviesListUseCase @Inject constructor(private val mMoviesListRepository: I
                 if (moviesListResponse.data?.movies.isNullOrEmpty())
                     Status.NoData(error = "No Data")
                 else {
-                    moviesListResponse
+                   moviesListResponse
                 }
             }
             else -> {

@@ -63,6 +63,14 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(),
         binding.swipeRefreshMovies.setOnRefreshListener {
             onRefresh()
         }
+
+        binding.errorLayout.btnRetry.setOnClickListener {
+            onRetryClicked()
+        }
+    }
+
+    private fun onRetryClicked() {
+        viewModel.onRetryClicked()
     }
 
     private fun onRefresh() {
@@ -99,22 +107,33 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(),
         observe(viewModel.moviesResponseSharedFlow) {
             when (it.statusCode) {
                 StatusCode.SUCCESS -> {
-                    binding.swipeRefreshMovies.isVisible = true
-                    binding.errorLayout.root.isVisible = false
-                    it.data?.let { movies ->
-                        moviesAdapter.replaceItems(movies)
-                    }
+                    onMoviesListSuccess(it.data)
                 }
                 else -> {
-                    binding.swipeRefreshMovies.isVisible = false
-                    binding.errorLayout.root.isVisible = true
-                    binding.errorLayout.txtError.text =
-                        it.error.alternate(getString(R.string.some_thing_went_wrong))
-                    binding.errorLayout.btnRetry.isVisible = true
+                    onMoviesListFailed(it.error)
                 }
             }
         }
 
+    }
+
+    private fun onMoviesListFailed(error: String?) {
+        binding.swipeRefreshMovies.isVisible = false
+        binding.errorLayout.root.isVisible = true
+        binding.errorLayout.txtError.text =
+            error.alternate(getString(R.string.some_thing_went_wrong))
+        binding.errorLayout.btnRetry.isVisible = true
+    }
+
+    private fun onMoviesListSuccess(data: ArrayList<Movie>?) {
+        binding.swipeRefreshMovies.isVisible = true
+        binding.errorLayout.root.isVisible = false
+        if(!data.isNullOrEmpty()){
+            viewModel.restoreViewState(this,binding.rvMoviesList)
+            moviesAdapter.replaceItems(data)
+        }else{
+            binding.emptyLayout.root.isVisible = true
+        }
     }
 
 
@@ -130,15 +149,7 @@ class MoviesListFragment : BaseFragment<FragmentMoviesListBinding>(),
         loadingModel.pullToRefreshProgressView = binding.swipeRefreshMovies
         loadingModel.loadingFullProgressView = binding.viewFullProgress.root
         loadingModel.pagingProgressView = binding.progressViewPaging.root
-        binding.viewProgress.root.isVisible =
-            (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.MAIN_PROGRESS)
-
-        binding.viewFullProgress.root.isVisible =
-            (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.FULL_PROGRESS)
-        binding.progressViewPaging.root.isVisible =
-            (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.PAGING_PROGRESS)
-        binding.swipeRefreshMovies.isRefreshing =
-            (loadingModel.shouldShow && loadingModel.progressType == ProgressTypes.PULL_TO_REFRESH_PROGRESS)
+        showProgress(loadingModel)
     }
 
     private fun bindErrorObserver() {
