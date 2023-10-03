@@ -13,7 +13,7 @@ The Areeb Movie App is an Android application that allows users to browse a list
 
 ## Installation
 
-1. Clone the repository from GitHub: git clone https://github.com/AhmedAlaa96/Movies
+1. Clone the repository from GitHub: git clone https://github.com/AhmedAlaa96/AreebMovies.git
 2. Open the project in Android Studio.
 3. Build and run the app on an emulator or a physical device.
 
