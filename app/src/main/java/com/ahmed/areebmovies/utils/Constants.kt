@@ -22,8 +22,8 @@ object Constants {
         const val GET_MOVIES = "discover/movie"
         const val GET_MOVIE_DETAILS = "movie/{movieId}?language=en-US"
         private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
-        fun getImageUrl(posterPath: String?): String?{
-            return if(posterPath.isNullOrEmpty()) null
+        fun getImageUrl(posterPath: String?): String? {
+            return if (posterPath.isNullOrEmpty()) null
             else "$IMAGE_BASE_URL$posterPath"
         }
     }
@@ -35,8 +35,7 @@ object Constants {
     object Headers {
         const val AUTHORIZATION = "Authorization"
         const val ACCEPT = "accept"
-        const val AUTHORIZATION_VALUE =
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZTY5YzZhYzA5MDM0YTI3N2NkZGIyYjhhNmYyNjFhNyIsInN1YiI6IjY0ZTYyZjRjOTBlYTRiMDBjNzM4ODVmNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wfAILB4WSIrXDectu-MgnSXHf9AZPiea4HE_9TNPTMg"
+        const val AUTHORIZATION_VALUE = ""
         const val ACCEPT_VALUE = "application/json"
     }
 

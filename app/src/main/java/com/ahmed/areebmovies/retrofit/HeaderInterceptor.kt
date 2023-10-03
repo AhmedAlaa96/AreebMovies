@@ -11,11 +11,16 @@ import java.io.IOException
 
 class HeaderInterceptor : Interceptor {
 
+    init {
+        System.loadLibrary("native-lib")
+    }
+    external fun getAuthorizationValue(): String?
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
+
         val request: Request = chain.request()
             .newBuilder()
-            .addHeader(AUTHORIZATION, AUTHORIZATION_VALUE)
+            .addHeader(AUTHORIZATION, getAuthorizationValue() ?: AUTHORIZATION_VALUE)
             .addHeader(ACCEPT, ACCEPT_VALUE)
             .build()
         return chain.proceed(request)

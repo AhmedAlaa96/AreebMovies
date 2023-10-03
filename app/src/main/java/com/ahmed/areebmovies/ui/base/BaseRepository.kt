@@ -6,6 +6,7 @@ import com.ahmed.areebmovies.data.remote.IRemoteDataSource
 import com.ahmed.areebmovies.data.shared_prefrences.IPreferencesDataSource
 import com.ahmed.areebmovies.utils.Utils
 import com.ahmed.areebmovies.utils.connection_utils.IConnectionUtils
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,7 +17,8 @@ import java.net.SocketException
 abstract class BaseRepository(
     private val connectionUtils: IConnectionUtils,
     private val mIRemoteDataSource: IRemoteDataSource,
-    private val mIPreferencesDataSource: IPreferencesDataSource
+    private val mIPreferencesDataSource: IPreferencesDataSource,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : IBaseRepository {
 
 
@@ -26,7 +28,9 @@ abstract class BaseRepository(
         }
 
 
-    fun <T> safeApiCalls(apiCall: suspend () -> T): Flow<Status<T>> {
+    fun <T> safeApiCalls(
+        apiCall: suspend () -> T
+    ): Flow<Status<T>> {
         return flow {
             if (isConnected) {
                 try {
@@ -48,7 +52,6 @@ abstract class BaseRepository(
             } else {
                 emit(Status.NoNetwork(error = "No Network")) as Unit
             }
-
-        }.flowOn((Dispatchers.IO)) as Flow<Status<T>>
+        }.flowOn((dispatcher)) as Flow<Status<T>>
     }
 }
