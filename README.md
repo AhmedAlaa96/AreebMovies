@@ -26,6 +26,7 @@ The Areeb Movie App is an Android application that allows users to browse a list
 - Kotlin
 - Android Architecture Components (ViewModel, Flow Coroutines)
 - Retrofit (for network requests)
+- Room (for local storage)
 - Glide (for image loading)
 - Dependency Injection (Hilt)
 - Unit Testing (JUnit, Mockito)
